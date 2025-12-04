@@ -17,7 +17,7 @@ public class CachingAppApplication {
 		SpringApplication.run(CachingAppApplication.class, args);
 	}
     // Seed some sample data on startup
-    @Bean
+   /* @Bean
     CommandLineRunner dataLoader(EmployeeRepository repo) {
         return args -> {
             repo.save(new Employee(null, "Asha Nair", "asha.nair@example.com", "Engineering",
@@ -27,5 +27,5 @@ public class CachingAppApplication {
             repo.save(new Employee(null, "Meera Das", "meera.das@example.com", "Finance",
                     new BigDecimal("95000"), Instant.now(), Instant.now()));
         };
-    }
+    }*/
 }

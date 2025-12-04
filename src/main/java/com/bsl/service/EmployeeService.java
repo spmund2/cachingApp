@@ -8,6 +8,9 @@ import com.bsl.model.dto.EmployeeDtos.EmployeeResponse;
 
 import com.bsl.exception.DuplicateEmailException;
 import com.bsl.exception.EmployeeNotFoundException;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,11 +32,13 @@ public class EmployeeService {
         return repo.findAll().stream().map(this::toResponse).toList();
     }
 
+    //@Cacheable(value = "employees", key = "#id")
+    @Cacheable(cacheNames = "employees", key = "#id")
     public EmployeeResponse get(Long id) {
         var e = repo.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
         return toResponse(e);
     }
-
+@CachePut(cacheNames = "employees", key = "#result.id")
     public EmployeeResponse create(CreateEmployeeRequest req) {
         if (repo.existsByEmail(req.email)) {
             throw new DuplicateEmailException(req.email);
@@ -46,7 +51,7 @@ public class EmployeeService {
         var saved = repo.save(e);
         return toResponse(saved);
     }
-
+@CachePut(cacheNames = "employees", key = "#id")
     public EmployeeResponse update(Long id, UpdateEmployeeRequest req) {
         var e = repo.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
         e.setName(req.name);
@@ -55,7 +60,7 @@ public class EmployeeService {
         var saved = repo.save(e);
         return toResponse(saved);
     }
-
+    @CacheEvict(cacheNames = "employees", key = "#id")
     public void delete(Long id) {
         var e = repo.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
         repo.delete(e);
