@@ -1,4 +1,4 @@
-**What is Caching?** 
+**What is Caching?** <br>
 Caching stores frequently accessed data in a fast storage layer (memory, Redis, etc.) so future requests can be served quickly without recomputation or hitting slower systems (databases, remote APIs). 
 Why Cache?  
 Performance: Reduce latency and CPU usage. 
